@@ -7,48 +7,74 @@
 
 
 
-// Запрос у пользователя количества строк для исходного массива
-Console.Write("Введите количество строк: ");
-int numberOfStrings = Convert.ToInt32(Console.ReadLine());
-
-// Инициализация исходного массива строк
-string[] initialArray = new string[numberOfStrings];
-
-// Заполнение исходного массива строками, введенными пользователем
-for (int i = 0; i < numberOfStrings; i++)
+// Метод для ввода строк в массив с клавиатуры
+string[] EnterStringsToArray()
 {
-    Console.Write($"Введите строку номер {i + 1}: ");
-    initialArray[i] = Console.ReadLine();
-}
+    Console.WriteLine("Введите количество строк: ");
+    int count = int.Parse(Console.ReadLine()); // Считывание количества строк
 
-// Подсчет количества строк, удовлетворяющих условию (длина <= 3)
-int count = 0;
-foreach (string str in initialArray)
-{
-    if (str.Length <= 3)
+    string[] workArray = new string[count]; // Инициализация массива строк
+
+    // Запрос строк у пользователя
+    Console.WriteLine($"Введите {count} строк(у) (после ввода каждой нажмите ENTER):");
+    for (int i = 0; i < count; i++)
     {
-        count++;
+        workArray[i] = Console.ReadLine(); // Сохранение каждой введенной строки в массив
     }
+
+    return workArray; // Возврат заполненного массива
 }
 
-// Создание нового массива для строк, удовлетворяющих условию
-string[] resultArray = new string[count];
-
-// Заполнение нового массива подходящими строками
-int index = 0;
-foreach (string str in initialArray)
+// Метод для создания нового массива из строк, длина которых меньше или равна 3 символам
+string[] CreatingArrayStringsLessThan3(string[] workArray)
 {
-    if (str.Length <= 3)
+    int count = 0; // Счетчик для подсчета строк подходящей длины
+    // Подсчет количества строк подходящей длины
+    foreach (string item in workArray)
     {
-        resultArray[index] = str;
-        index++;
+        if (item.Length <= 3)
+        {
+            count++;
+        }
     }
+
+    string[] result = new string[count]; // Создание нового массива для подходящих строк
+    int i = 0; // Индекс для нового массива
+    // Заполнение нового массива строками подходящей длины
+    foreach (string item in workArray)
+    {
+        if (item.Length <= 3)
+        {
+            result[i] = item;
+            i++;
+        }
+    }
+
+    return result; // Возврат нового отфильтрованного массива
 }
 
-// Вывод нового массива строк
-Console.WriteLine("Новый массив строк, длина которых меньше или равна 3 символам:");
-foreach (string str in resultArray)
+// Метод для преобразования массива строк в строку для печати
+string PrintArray(string[] workArray)
 {
-    Console.WriteLine(str);
+    string arString = "["; // Начало строки для печати
+    // Проход по всем элементам массива
+    for (int i = 0; i < workArray.Length; i++)
+    {
+        arString += $""{workArray[i]}""; // Добавление элемента массива в строку
+        if (i < workArray.Length - 1)
+        {
+            arString += ", "; // Добавление запятой между элементами
+        }
+    }
+    arString += "]"; // Закрытие строки для печати
+    return arString; // Возврат строки для печати
 }
 
+// Основной код программы
+string[] workArray = EnterStringsToArray(); // Ввод массива строк пользователем
+string[] result = CreatingArrayStringsLessThan3(workArray); // Создание отфильтрованного массива
+string firstArray = PrintArray(workArray); // Преобразование исходного массива в строку для печати
+string secondArray = PrintArray(result); // Преобразование отфильтрованного массива в строку для печати
+
+// Вывод исходного и отфильтрованного массивов
+Console.WriteLine(firstArray + " -> " + secondArray);
